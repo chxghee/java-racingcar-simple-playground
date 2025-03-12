@@ -1,7 +1,6 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -28,7 +27,7 @@ public class Racing {
     public void round() {
         for (Car car : cars) {
             Random random = new Random();
-            int num = random.nextInt(9);
+            int num = random.nextInt(10);
             car.moveCar(num);
         }
     }
