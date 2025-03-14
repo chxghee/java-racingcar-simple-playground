@@ -2,6 +2,8 @@ package domain;
 
 public class Car {
 
+    private static final int MOVING_THRESHOLD = 4;
+
     private String name;
     private int position = 0;
 
@@ -14,13 +16,13 @@ public class Car {
     }
 
     public void moveCar(int random) {
-        if (random >= 4) {
+        if (random >= MOVING_THRESHOLD) {
             this.position += 1;
         }
     }
 
-    public Boolean isWinner(int winningPosition) {
-        if (this.position == winningPosition) {
+    public boolean hasSamePosition(int position) {
+        if (this.position == position) {
             return true;
         }
         return false;
