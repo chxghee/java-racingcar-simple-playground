@@ -38,7 +38,6 @@ class RacingTest {
     void 우승자가_한_명_이상_존재할_수_있다() {
         int roundNum = 5;
         racing.startRacing(roundNum);
-        racing.determineWinners();
         assertThat(racing.getWinners().size()).isGreaterThanOrEqualTo(1);
     }
 
@@ -57,6 +56,15 @@ class RacingTest {
 
         assertThat(allCarsAtSamePosition(racing.getCars())).isTrue();
         assertThat(racing.findWinningPosition()).isEqualTo(0);
+    }
+
+    @Test
+    void 레이싱을_시작하지_않고_우승자를_조회하면_예외가_발생해야_한다() {
+
+        assertThatThrownBy(() -> racing.getWinners())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("아직 우승자가 결정되지 않았습니다!");
+
     }
 
     public boolean allCarsAtSamePosition(List<Car> cars) {

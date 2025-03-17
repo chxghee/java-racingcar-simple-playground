@@ -1,12 +1,9 @@
 package domain;
 
 import random.NumberGenerator;
-import random.RandomNumberGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Racing {
 
@@ -23,6 +20,9 @@ public class Racing {
     }
 
     public List<Car> getWinners() {
+        if (winners.isEmpty()) {
+            throw new IllegalStateException("아직 우승자가 결정되지 않았습니다!");
+        }
         return winners;
     }
 
@@ -36,6 +36,7 @@ public class Racing {
         for (int i = 0; i < roundNum; i++) {
             round();
         }
+        determineWinners();
     }
 
     public void round() {
@@ -44,7 +45,7 @@ public class Racing {
         }
     }
 
-    public void determineWinners() {
+    private void determineWinners() {
         int winningPosition = findWinningPosition();
         winners = cars.stream()
                 .filter(car -> car.hasSamePosition(winningPosition))
