@@ -1,74 +1,67 @@
-package domain;
-
-import org.assertj.core.api.Assertions;
+package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import random.InPlaceNumberGenerator;
-import random.MoveNumberGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 class RacingTest {
 
-    private Racing racing;
+    private List<String> carNames;
 
     @BeforeEach
     void setUp() {
-        int carNum = 5;
-        racing = new Racing(new MoveNumberGenerator());
-        racing.createCars(carNum);
+        carNames = new ArrayList<>();
+        carNames.add("BMW");
+        carNames.add("Audi");
+        carNames.add("Ford");
     }
 
     @Test
-    void 자동차는_입력한_개수만큼_리스트에_추가된다() {
-        assertThat(racing.getCars().size()).isEqualTo(5);
-    }
+    void n회_라운드를_진행하면_자동차들의_위치는_n이하이다() {
+        int roundNumber = 10;
+        Cars cars = Cars.create(carNames, new RacingNumberGenerator());
+        Racing racing = new Racing(cars);
 
-    @Test
-    void 가장_멀리_이동한_자동차가_우승이다() {
-        List<Car> cars = racing.getCars();
-        cars.get(0).moveCar(5);
-        assertThat(racing.findWinningPosition()).isEqualTo(1);
+        for (int i = 0; i < roundNumber; i++) {
+            racing.round();
+        }
+        boolean result = racing.getCars().getCars().stream()
+                .allMatch(car -> car.getPosition() <= roundNumber);
+        assertThat(result).isTrue();
     }
 
     @Test
     void 우승자가_한_명_이상_존재할_수_있다() {
-        int roundNum = 5;
-        racing.startRacing(roundNum);
-        assertThat(racing.getWinners().size()).isGreaterThanOrEqualTo(1);
+        int roundNumber = 5;
+        Cars cars = Cars.create(carNames, new MoveNumberGenerator());
+        Racing racing = new Racing(cars);
+
+        for (int i = 0; i < roundNumber; i++) {
+            racing.round();
+        }
+        racing.findWinners();
+        Winners winners = racing.getWinners();
+        assertThat(winners.size()).isEqualTo(3);
     }
 
     @Test
-    void 모든_라운드_전진하면_우승위치는_라운드_횟수와_같다() {
-        int roundNom = 5;
-        racing.startRacing(roundNom);
-        assertThat(racing.findWinningPosition()).isEqualTo(5);
-    }
-
-    @Test
-    void 모든_자동차가_4보다_작은_값을_받으면_모든_자동차의_위치는_0이다() {
-        Racing racing = new Racing(new InPlaceNumberGenerator());
-        racing.createCars(5);
-        racing.round();
-
-        assertThat(allCarsAtSamePosition(racing.getCars())).isTrue();
-        assertThat(racing.findWinningPosition()).isEqualTo(0);
-    }
-
-    @Test
-    void 레이싱을_시작하지_않고_우승자를_조회하면_예외가_발생해야_한다() {
+    void 우승자가_정해지지_않은_상태에서_우승자를_조회하면_예외가_발생한다() {
+        Cars cars = Cars.create(carNames, new MoveNumberGenerator());
+        Racing racing = new Racing(cars);
 
         assertThatThrownBy(() -> racing.getWinners())
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("아직 우승자가 결정되지 않았습니다!");
-
+                .hasMessage("아직 우승자가 정해지지 않았습니다!");
     }
 
-    public boolean allCarsAtSamePosition(List<Car> cars) {
-        int position = cars.get(0).getPosition(); // 첫 번째 자동차의 위치
-        return cars.stream().allMatch(car -> car.getPosition() == position);
+    private static class MoveNumberGenerator implements NumberGenerator {
+        @Override
+        public int generate() {
+            return 5;
+        }
     }
 }
