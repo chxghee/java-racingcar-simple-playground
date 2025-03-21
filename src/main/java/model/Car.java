@@ -30,8 +30,7 @@ public class Car {
         return name;
     }
 
-    @Override
-    public String toString() {
+    public String getCarPositionToString() {
         return name + ": " + "-".repeat(position);
     }
 }

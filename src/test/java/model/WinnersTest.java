@@ -37,6 +37,6 @@ class WinnersTest {
 
     @Test
     void 우승자_이름_출력시_쉼표로_구분되어야_한다() {
-        assertThat(winners.toString()).isEqualTo("car0, car1, car2");
+        assertThat(winners.getWinnersToString()).isEqualTo("car0, car1, car2");
     }
 }

@@ -72,18 +72,4 @@ class CarsTest {
         assertThatThrownBy(() -> findCars.add(new Car("KIA")))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
-
-    private static class InplaceNumberGenerator implements NumberGenerator {
-        @Override
-        public int generate() {
-            return 0;
-        }
-    }
-
-    private static class MoveNumberGenerator implements NumberGenerator {
-        @Override
-        public int generate() {
-            return 5;
-        }
-    }
 }

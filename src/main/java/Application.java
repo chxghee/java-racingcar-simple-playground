@@ -15,6 +15,6 @@ public class Application {
         RacingGameController racingGameController = new RacingGameController(carNames, tryCount, new RacingNumberGenerator());
         racingGameController.run();
 
-        OutputView.printWinners(racingGameController.getWinners().toString());
+        OutputView.printWinners(racingGameController.getWinners().getWinnersToString());
     }
 }

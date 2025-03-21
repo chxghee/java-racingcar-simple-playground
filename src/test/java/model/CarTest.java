@@ -40,7 +40,7 @@ class CarTest {
             car.move(5);
         }
 
-        String newPositionMessage = car.toString();
+        String newPositionMessage = car.getCarPositionToString();
         long result = newPositionMessage.chars().filter(ch -> ch == '-').count();
         assertThat(result).isEqualTo(moveCount);
     }

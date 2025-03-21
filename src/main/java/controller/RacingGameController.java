@@ -2,7 +2,6 @@ package controller;
 
 import model.Cars;
 import model.NumberGenerator;
-import model.Racing;
 import model.Winners;
 import view.OutputView;
 
@@ -23,28 +22,26 @@ public class RacingGameController {
 
     public void run() {
         Cars cars = Cars.create(inputCarNames, numberGenerator);
-        Racing racing = startGame(cars, tryCount);
-        finishGame(racing);
+        startGame(cars, tryCount);
+        finishGame(cars);
     }
 
-    private Racing startGame(Cars cars, int tryCount) {
+    private void startGame(Cars cars, int tryCount) {
         OutputView.printGameStartMessage();
-        Racing racing = new Racing(cars);
         for (int i = 0; i < tryCount; i++) {
-            racing.round();
-            OutputView.printRoundResult(cars.toString());
+            cars.moveAll();
+            OutputView.printRoundResult(cars.getCarsPositionToString());
         }
-        return racing;
     }
 
-    private void finishGame(Racing racing) {
-        racing.findWinners();
-        winners = racing.getWinners();
+    private void finishGame(Cars cars) {
+        Cars leadingCars = cars.getLeadingCars();
+        winners = Winners.create(leadingCars.getCars());
     }
 
     public Winners getWinners() {
         if (winners == null) {
-            throw new IllegalStateException("RacingGameController has not been run yet.");
+            throw new IllegalStateException("레이싱 게임이 아직 시작되지 않았습니다!");
         }
         return winners;
     }

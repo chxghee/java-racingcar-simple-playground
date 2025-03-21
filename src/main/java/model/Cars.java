@@ -49,10 +49,9 @@ public class Cars {
         return Collections.unmodifiableList(cars);
     }
 
-    @Override
-    public String toString() {
+    public String getCarsPositionToString() {
         return cars.stream()
-                .map(Car::toString)
+                .map(Car::getCarPositionToString)
                 .collect(Collectors.joining("\n"));
     }
 }

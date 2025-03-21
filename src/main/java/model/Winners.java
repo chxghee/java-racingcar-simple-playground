@@ -29,8 +29,7 @@ public class Winners {
         return winners.get(0).getPosition();
     }
 
-    @Override
-    public String toString() {
+    public String getWinnersToString() {
         return winners.stream()
                 .map(Car::getName)
                 .collect(Collectors.joining(", "));
